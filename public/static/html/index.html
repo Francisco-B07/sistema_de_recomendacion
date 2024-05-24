@@ -21,7 +21,6 @@
       <script>
         // Función para cargar los productos recomendados
         async function cargarProductos() {
-          console.log("ENT", procces.env.URL);
           const response = await fetch(
             `https://sistema-de-recomendacion-2.onrender.com/products`
           );
