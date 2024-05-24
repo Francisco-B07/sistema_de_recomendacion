@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detalles del Producto</title>
+    <!-- <link rel="stylesheet" href="/static/css/style.css" /> -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    />
+    <script defer src="/static/js/script.js"></script>
+  </head>
+  <body>
+    <div class="product-container" id="product-details" data-product-id="555">
+      <div class="container">
+        <h1 class="my-4">Productos</h1>
+        <div id="productos" class="row"></div>
+      </div>
+
+      <script>
+        // Función para cargar los productos recomendados
+        async function cargarProductos() {
+          const response = await fetch("http://127.0.0.1:8000/products");
+          console.log(response);
+          const productos = await response.json();
+          const productosDiv = document.getElementById("productos");
+
+          productos.forEach((producto) => {
+            const userId = 1003;
+            const productoHTML = `
+                    <div class="col-md-4">
+                        <div class="card mb-4 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">${producto.Product}</h5>
+                                <p class="card-text">Categoría: ${producto.Category}</p>
+                                <p class="card-text">Precio: ${producto.Price}</p>
+                                <a href="/product/${producto.ProductID}/${userId}" class="btn btn-primary ver-producto" data-id="{{userId}}">Ver producto</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            productosDiv.innerHTML += productoHTML;
+          });
+        }
+
+        // Llamar a la función para cargar los productos al cargar la página
+        window.onload = cargarProductos;
+      </script>
+    </div>
+  </body>
+</html>

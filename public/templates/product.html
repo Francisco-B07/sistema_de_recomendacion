@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detalles del Producto</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    />
+    <script defer src="/static/js/script.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="my-4 d-flex justify-content-between">
+        <a href="/" class="btn btn-primary">Volver al inicio</a>
+        <h4 class="">Usuario: {{ userId }}</h4>
+      </div>
+      <h1 class="my-4">{{ producto.Product }}</h1>
+      <p class="card-text">Categoría: {{producto.Category}}</p>
+      <p class="card-text">Precio: {{producto.Price}}</p>
+      <div id="productos" class="row"></div>
+
+      <div class="recommended-products">
+        <h3 class="d-flex justify-content-center">Productos recomendados</h3>
+        <div id="recommendations-container" class="d-flex">
+          <!-- Los productos recomendados se cargarán aquí -->
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Obtener la URL actual
+        const url = window.location.href;
+
+        // Dividir la URL por "/"
+        const parts = url.split("/");
+
+        // Suponiendo que la estructura es "http://127.0.0.1:8000/product/{productId}/{userId}"
+        const userId = parts[parts.length - 1]; // El último segmento debería ser el userId
+        const productId = parts[parts.length - 2]; // El penúltimo segmento debería ser el productId
+        const UserID = userId; // Se pasa el ID como un entero
+        console.log("userId", userId);
+        // const productImage = document.getElementById('product-image');
+
+        // Llamada a la API pasando el ID 555
+        fetch(`http://127.0.0.1:8000/recomendaciones/${UserID}`)
+          .then((response) => response.json())
+          .then((data) => {
+            // Mostrar la imagen del producto principal
+            // productImage.src = "http://books.google.com/books/content?id=HksgDQAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api";
+
+            // Recomendaciones de productos
+            const container = document.getElementById(
+              "recommendations-container"
+            );
+            container.innerHTML = ""; // Limpiar contenedor anterior
+            data.forEach(async (product) => {
+              console.log(product);
+              const response = await fetch(
+                `http://127.0.0.1:8000/product/${product.id2}`
+              );
+              const producto = await response.json();
+              console.log("prod", productos);
+              const productDiv = document.createElement("div");
+              productDiv.className = "recommended-product";
+              productDiv.innerHTML = `
+              
+              
+                <div class="card mb-4 shadow-sm mx-2">
+                  <div class="card-body">
+                    <h5 class="card-title">${producto.Product}</h5>
+                    <p class="card-text">Categoría: ${producto.Category}</p>
+                    <p class="card-text">Precio: ${producto.Price}</p>
+                    <p>Similitud: ${product.similitud.toFixed(2)}</p>
+                                <a href="/product/${
+                                  producto.ProductID
+                                }/${userId}" class="btn btn-primary ver-producto" data-id="{{userId}}">Ver producto</a>
+                            </div>
+                        </div>
+                  
+    
+                        
+                        
+                       
+                    `;
+              container.appendChild(productDiv);
+            });
+          })
+          .catch((error) =>
+            console.error("Error en la llamada a la API:", error)
+          );
+      });
+    </script>
+  </body>
+</html>
