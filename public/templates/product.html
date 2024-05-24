@@ -45,7 +45,9 @@
         // const productImage = document.getElementById('product-image');
 
         // Llamada a la API pasando el ID 555
-        fetch(`http://127.0.0.1:8000/recomendaciones/${UserID}`)
+        fetch(
+          `https://sistema-de-recomendacion-2.onrender.com/recomendaciones/${UserID}`
+        )
           .then((response) => response.json())
           .then((data) => {
             // Mostrar la imagen del producto principal
@@ -59,7 +61,7 @@
             data.forEach(async (product) => {
               console.log(product);
               const response = await fetch(
-                `http://127.0.0.1:8000/product/${product.id2}`
+                `https://sistema-de-recomendacion-2.onrender.com/product/${product.id2}`
               );
               const producto = await response.json();
               console.log("prod", productos);
