@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Busqueda por texto</title>
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    />
+    <script defer src="/static/js/script.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center my-4">
+        <a href="/">
+          <img
+            src="/static/images/logo.png"
+            alt="logo asistente de compras"
+            height="80px"
+            width="auto"
+            class="logo"
+          />
+        </a>
+        <a href="/search-by-image" class="boton">Buscar por imagen</a>
+        <a href="/search-by-text" class="boton">Buscar por texto</a>
+        <select id="user_select" name="user_select" class="boton my-4">
+          <option value="">Elegir usuario</option>
+          {% for user_id in user_ids %}
+          <option value="{{ user_id }}">{{ user_id }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <h1>Busqueda por texto</h1>
+    </div>
+  </body>
+</html>

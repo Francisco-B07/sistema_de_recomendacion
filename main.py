@@ -35,8 +35,10 @@ df = pd.read_csv('recomendacion_supermercado_dataset_2.csv')
 
 # Devolver 20 productos
 def get_products():    
-    products = df.head(20).to_dict(orient='records')
-    return products
+    products = df.head(100)
+    df_unique  = products.drop_duplicates(subset='ProductID')
+
+    return df_unique 
 
 def load_users():
     return df['UserID'].tolist()
@@ -45,16 +47,21 @@ def load_users():
 # Carga la matriz de recomendaciones del disco
 matriz_recomendaciones_long = pd.read_pickle("matriz_recomendaciones_long.pkl")
 
-
-# @app.get("/",response_class=HTMLResponse)
-# def root():
-#     html_address = "./public/static/html/index.html"
-#     return FileResponse(html_address, status_code=200)
+# RUTAS
 
 @app.get("/")
 async def read_root(request: Request):
     user_ids = load_users()
     return templates.TemplateResponse("index.html", {"request": request, "user_ids": user_ids})
+
+@app.get("/search-by-text")
+async def read_root(request: Request):
+    return templates.TemplateResponse("search-by-text.html", {"request": request})
+
+@app.get("/search-by-image")
+async def read_root(request: Request):
+    return templates.TemplateResponse("search-by-image.html", {"request": request})
+
 
 @app.get("/product/{productId}/{userId}",response_class=HTMLResponse)
 def product(request: Request, productId:int, userId:str):
@@ -63,6 +70,17 @@ def product(request: Request, productId:int, userId:str):
     print(producto)
     return templates.TemplateResponse("product.html",{"request":request, "productId": productId, "userId": userId, "producto": producto[0]})
 
+
+
+# END POINTS
+
+# Devuelve todos los productos
+@app.get("/products")
+async def all_products():
+    products = get_products()
+    return products.to_dict(orient='records')
+
+# Devuelve un producto
 @app.get("/product/{productId}")
 async def ver_producto(productId: int):
 
@@ -72,7 +90,7 @@ async def ver_producto(productId: int):
         return producto[0]
     return {"error": "Producto no encontrado"}
 
-
+# Devuelve las recomendaciones del usuario logueado
 @app.get("/recomendaciones/{item_id}")
 async def hacer_recomendacion(item_id: int, n: int = 3):
     # Verifica que el item exista en la matriz
@@ -87,9 +105,6 @@ async def hacer_recomendacion(item_id: int, n: int = 3):
     else:
         raise HTTPException(status_code=404, detail=f"Error: El ID {item_id} no se encuentra en las columnas del DataFrame.")
 
-@app.get("/products")
-async def all_products():
-    products = df.head(80)
-    return products.to_dict(orient='records')
+
 
 

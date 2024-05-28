@@ -14,21 +14,40 @@
   <body>
     <div class="product-container" id="product-details" data-product-id="555">
       <div class="container">
-        <div class="d-flex justify-content-between">
-          <h1 class="my-4">Productos</h1>
-          <select id="user_select" name="user_select" class="select-user my-4">
+        <div class="d-flex justify-content-between align-items-center my-4">
+          <a href="/">
+            <img
+              src="/static/images/logo.png"
+              alt="logo asistente de compras"
+              height="80px"
+              width="auto"
+              class="logo"
+            />
+          </a>
+          <a href="/search-by-image" class="boton">Buscar por imagen</a>
+          <a href="/search-by-text" class="boton">Buscar por texto</a>
+          <select id="user_select" name="user_select" class="boton my-4">
             <option value="">Elegir usuario</option>
             {% for user_id in user_ids %}
             <option value="{{ user_id }}">{{ user_id }}</option>
             {% endfor %}
           </select>
         </div>
+        <div class="d-flex justify-content-center">
+          <h1
+            id="title"
+            class="my-4 text-uppercase"
+            style="display: none; color: rgb(84, 16, 245); font-weight: 700"
+          >
+            Productos
+          </h1>
+        </div>
         <p
           id="message"
           style="display: block"
           class="text-center text-uppercase message"
         >
-          ¡Elegir un usuario para continuar!
+          ¡Elija un usuario para continuar!
         </p>
         <div id="productos" class="row"></div>
       </div>
@@ -54,7 +73,9 @@
                                 <h5 class="card-title">${producto.Product}</h5>
                                 <p class="card-text">Categoría: ${producto.Category}</p>
                                 <p class="card-text">Precio: ${producto.Price}</p>
-                                <a href="/product/${producto.ProductID}/${selectedUserId}" class="btn btn-primary ver-producto" data-id="{{userId}}">Ver producto</a>
+                                <div style="max-width: 165px">
+                                  <a href="/product/${producto.ProductID}/${selectedUserId}" class="boton" data-id="{{userId}}">Ver producto</a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -66,6 +87,7 @@
         document.addEventListener("DOMContentLoaded", (event) => {
           const selectElement = document.getElementById("user_select");
           const messageElement = document.getElementById("message");
+          const titleElement = document.getElementById("title");
 
           selectElement.addEventListener("change", async (event) => {
             const selectedUserId = event.target.value;
@@ -75,6 +97,11 @@
               messageElement.style.display = "none";
             } else {
               messageElement.style.display = "block";
+            }
+            if (selectedUserId != "") {
+              titleElement.style.display = "block";
+            } else {
+              titleElement.style.display = "none";
             }
           });
         });

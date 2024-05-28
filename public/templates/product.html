@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Detalles de {{ producto.Product }}</title>
+    <link rel="stylesheet" href="/static/css/style.css" />
     <link
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -12,17 +13,33 @@
   </head>
   <body>
     <div class="container">
-      <div class="my-4 d-flex justify-content-between">
-        <a href="/" class="btn btn-primary">Volver al inicio</a>
-        <h4 class="">Usuario: {{ userId }}</h4>
+      <div class="d-flex justify-content-between align-items-center my-4">
+        <a href="/">
+          <img
+            src="/static/images/logo.png"
+            alt="logo asistente de compras"
+            height="80px"
+            width="auto"
+            class="logo"
+          />
+        </a>
+        <a href="/search-by-image" class="boton">Buscar por imagen</a>
+        <a href="/search-by-text" class="boton">Buscar por texto</a>
+        <button class="boton">Usuario {{ userId }}</button>
       </div>
-      <h1 class="my-4">{{ producto.Product }}</h1>
-      <p class="card-text">Categoría: {{producto.Category}}</p>
-      <p class="card-text">Precio: {{producto.Price}}</p>
+
+      <h1 class="my-4 product-name mt-5">{{ producto.Product }}</h1>
+      <p class="card-text product-items">Categoría: {{producto.Category}}</p>
+      <p class="card-text product-items">Precio: {{producto.Price}}</p>
       <div id="productos" class="row"></div>
 
       <div class="recommended-products">
-        <h3 class="d-flex justify-content-center">Productos recomendados</h3>
+        <h3
+          class="d-flex justify-content-center text-uppercase mt-5 my-5"
+          style="color: rgb(84, 16, 245); font-weight: 700; font-size: 30px"
+        >
+          Productos recomendados
+        </h3>
         <div id="recommendations-container" class="d-flex">
           <!-- Los productos recomendados se cargarán aquí -->
         </div>
@@ -77,12 +94,18 @@
                 <div class="card mb-4 shadow-sm mx-2">
                   <div class="card-body">
                     <h5 class="card-title">${producto.Product}</h5>
-                    <p class="card-text">Categoría: ${producto.Category}</p>
-                    <p class="card-text">Precio: ${producto.Price}</p>
-                    <p>Similitud: ${product.similitud.toFixed(2)}</p>
-                                <a href="/product/${
-                                  producto.ProductID
-                                }/${userId}" class="btn btn-primary ver-producto" data-id="{{userId}}">Ver producto</a>
+                    <p class="card-text mt-5 mb-2">Categoría: ${
+                      producto.Category
+                    }</p>
+                    <p class="card-text mb-2">Precio: ${producto.Price}</p>
+                    <p class="product-items mb-5">Similitud: ${product.similitud.toFixed(
+                      2
+                    )}</p>
+                    <div style="max-width: 165px">
+                      <a href="/product/${
+                        producto.ProductID
+                      }/${userId}" class="boton" data-id="{{userId}}">Ver producto</a>
+                      </div>
                             </div>
                         </div>
                   
