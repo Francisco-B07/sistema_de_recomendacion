@@ -58,7 +58,7 @@
         const userId = parts[parts.length - 1]; // El último segmento debería ser el userId
         const productId = parts[parts.length - 2]; // El penúltimo segmento debería ser el productId
         const UserID = userId; // Se pasa el ID como un entero
-        console.log("userId", userId);
+
         // const productImage = document.getElementById('product-image');
 
         // Llamada a la API pasando el ID 555
@@ -78,14 +78,13 @@
             );
             container.innerHTML = ""; // Limpiar contenedor anterior
             data.forEach(async (product) => {
-              console.log(product);
               // `https://sistema-de-recomendacion-2.onrender.com/product/${product.id2}`
               // `http://127.0.0.1:8000/product/${product.id2}`
               const response = await fetch(
                 `https://sistema-de-recomendacion-2.onrender.com/product/${product.id2}`
               );
               const producto = await response.json();
-              console.log("prod", productos);
+
               const productDiv = document.createElement("div");
               productDiv.className = "recommended-product";
               productDiv.innerHTML = `

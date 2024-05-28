@@ -26,12 +26,22 @@
           </a>
           <a href="/search-by-image" class="boton">Buscar por imagen</a>
           <a href="/search-by-text" class="boton">Buscar por texto</a>
-          <select id="user_select" name="user_select" class="boton my-4">
+          <select
+            id="user_select"
+            name="user_select"
+            class="boton my-4"
+            style="display: block"
+          >
             <option value="">Elegir usuario</option>
             {% for user_id in user_ids %}
             <option value="{{ user_id }}">{{ user_id }}</option>
             {% endfor %}
           </select>
+          <button
+            id="user_loggedIn"
+            class="boton"
+            style="display: none"
+          ></button>
         </div>
         <div class="d-flex justify-content-center">
           <h1
@@ -54,18 +64,19 @@
 
       <script>
         // Función para cargar los productos recomendados
-        async function cargarProductos(selectedUserId) {
+        async function cargarProductos() {
           // `https://sistema-de-recomendacion-2.onrender.com/products`
           // http://127.0.0.1:8000/products
           const response = await fetch(
             `https://sistema-de-recomendacion-2.onrender.com/products`
           );
-          console.log(response);
+
           const productos = await response.json();
           const productosDiv = document.getElementById("productos");
+          const selectedUserId = await localStorage.getItem("user_id");
+          console.log("selectedUserId", selectedUserId);
 
           productos.forEach((producto) => {
-            console.log("user:", selectedUserId);
             const productoHTML = `
                     <div class="col-md-4">
                         <div class="card mb-4 shadow-sm">
@@ -84,24 +95,33 @@
           });
         }
         // Obtener el usuario seleccionado
-        document.addEventListener("DOMContentLoaded", (event) => {
+        document.addEventListener("DOMContentLoaded", async (event) => {
           const selectElement = document.getElementById("user_select");
           const messageElement = document.getElementById("message");
           const titleElement = document.getElementById("title");
+          const userLoggedIn = document.getElementById("user_loggedIn");
 
           selectElement.addEventListener("change", async (event) => {
             const selectedUserId = event.target.value;
-
+            await localStorage.setItem("user_id", selectedUserId);
+            const userHTML = `
+          <span>Usuario ${selectedUserId}</span>
+          `;
+            userLoggedIn.innerHTML += userHTML;
             await cargarProductos(selectedUserId);
             if (selectedUserId != "") {
               messageElement.style.display = "none";
+              selectElement.style.display = "none";
             } else {
               messageElement.style.display = "block";
+              selectElement.style.display = "block";
             }
             if (selectedUserId != "") {
               titleElement.style.display = "block";
+              userLoggedIn.style.display = "block";
             } else {
               titleElement.style.display = "none";
+              userLoggedIn.style.display = "none";
             }
           });
         });
