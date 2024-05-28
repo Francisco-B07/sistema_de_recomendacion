@@ -16,7 +16,7 @@
       <div class="d-flex justify-content-between align-items-center my-4">
         <a href="/">
           <img
-            src="/static/images/logo.png"
+            src="/static/images/logo.jpg"
             alt="logo asistente de compras"
             height="80px"
             width="auto"
@@ -64,9 +64,7 @@
         // Llamada a la API pasando el ID 555
         // `https://sistema-de-recomendacion-2.onrender.com/recomendaciones/${UserID}`
         // http://127.0.0.1:8000/recomendaciones/${UserID}
-        fetch(
-          `https://sistema-de-recomendacion-2.onrender.com/recomendaciones/${UserID}`
-        )
+        fetch(`http://127.0.0.1:8000/recomendaciones/${UserID}`)
           .then((response) => response.json())
           .then((data) => {
             // Mostrar la imagen del producto principal
@@ -82,7 +80,7 @@
               // `https://sistema-de-recomendacion-2.onrender.com/product/${product.id2}`
               // `http://127.0.0.1:8000/product/${product.id2}`
               const response = await fetch(
-                `https://sistema-de-recomendacion-2.onrender.com/product/${product.id2}`
+                `http://127.0.0.1:8000/product/${product.id2}`
               );
               const producto = await response.json();
               console.log("prod", productos);
