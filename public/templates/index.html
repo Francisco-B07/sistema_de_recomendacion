@@ -105,7 +105,7 @@
             const selectedUserId = event.target.value;
             await localStorage.setItem("user_id", selectedUserId);
             const userHTML = `
-          <span>Usuario ${selectedUserId}</span>
+          <span>Hola ${selectedUserId}</span>
           `;
             userLoggedIn.innerHTML += userHTML;
             await cargarProductos(selectedUserId);
