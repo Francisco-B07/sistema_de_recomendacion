@@ -1,4 +1,4 @@
-body {
+/* body {
   font-family: Arial, sans-serif;
 }
 .product-container,
@@ -18,4 +18,16 @@ body {
 img {
   width: 100px;
   height: auto;
+} */
+
+.message {
+  margin-top: 200px;
+  font-size: 2em; /* Tamaño de la letra más grande */
+  font-weight: bold; /* Texto en negrita */
+  color: blue; /* Color opcional, por ejemplo rojo */
+}
+
+.select-user {
+  /* height: 50px; */
+  padding: 6px;
 }

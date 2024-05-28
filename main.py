@@ -38,16 +38,23 @@ def get_products():
     products = df.head(20).to_dict(orient='records')
     return products
 
+def load_users():
+    return df['UserID'].tolist()
 
 
 # Carga la matriz de recomendaciones del disco
 matriz_recomendaciones_long = pd.read_pickle("matriz_recomendaciones_long.pkl")
 
 
-@app.get("/",response_class=HTMLResponse)
-def root():
-    html_address = "./public/static/html/index.html"
-    return FileResponse(html_address, status_code=200)
+# @app.get("/",response_class=HTMLResponse)
+# def root():
+#     html_address = "./public/static/html/index.html"
+#     return FileResponse(html_address, status_code=200)
+
+@app.get("/")
+async def read_root(request: Request):
+    user_ids = load_users()
+    return templates.TemplateResponse("index.html", {"request": request, "user_ids": user_ids})
 
 @app.get("/product/{productId}/{userId}",response_class=HTMLResponse)
 def product(request: Request, productId:int, userId:str):

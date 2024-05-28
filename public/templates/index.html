@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Asistente de compras</title>
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    />
+    <script defer src="/static/js/script.js"></script>
+  </head>
+  <body>
+    <div class="product-container" id="product-details" data-product-id="555">
+      <div class="container">
+        <div class="d-flex justify-content-between">
+          <h1 class="my-4">Productos</h1>
+          <select id="user_select" name="user_select" class="select-user my-4">
+            <option value="">Elegir usuario</option>
+            {% for user_id in user_ids %}
+            <option value="{{ user_id }}">{{ user_id }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <p
+          id="message"
+          style="display: block"
+          class="text-center text-uppercase message"
+        >
+          ¡Elegir un usuario para continuar!
+        </p>
+        <div id="productos" class="row"></div>
+      </div>
+
+      <script>
+        // Función para cargar los productos recomendados
+        async function cargarProductos(selectedUserId) {
+          // `https://sistema-de-recomendacion-2.onrender.com/products`
+          // http://127.0.0.1:8000/products
+          const response = await fetch(
+            `https://sistema-de-recomendacion-2.onrender.com/products`
+          );
+          console.log(response);
+          const productos = await response.json();
+          const productosDiv = document.getElementById("productos");
+
+          productos.forEach((producto) => {
+            console.log("user:", selectedUserId);
+            const productoHTML = `
+                    <div class="col-md-4">
+                        <div class="card mb-4 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">${producto.Product}</h5>
+                                <p class="card-text">Categoría: ${producto.Category}</p>
+                                <p class="card-text">Precio: ${producto.Price}</p>
+                                <a href="/product/${producto.ProductID}/${selectedUserId}" class="btn btn-primary ver-producto" data-id="{{userId}}">Ver producto</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            productosDiv.innerHTML += productoHTML;
+          });
+        }
+        // Obtener el usuario seleccionado
+        document.addEventListener("DOMContentLoaded", (event) => {
+          const selectElement = document.getElementById("user_select");
+          const messageElement = document.getElementById("message");
+
+          selectElement.addEventListener("change", async (event) => {
+            const selectedUserId = event.target.value;
+
+            await cargarProductos(selectedUserId);
+            if (selectedUserId != "") {
+              messageElement.style.display = "none";
+            } else {
+              messageElement.style.display = "block";
+            }
+          });
+        });
+        // Llamar a la función para cargar los productos al cargar la página
+      </script>
+    </div>
+  </body>
+</html>
